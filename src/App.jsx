@@ -1,6 +1,7 @@
 import TabelRoutingStatus from "./components/TabelRoutingStatus";
 import TabelCsStatus from "./components/TabelCsStatus";
 import React, { useState } from "react";
+import NDNTopology from "./components/NDNTopology";
 import {
   Network,
   ArrowRightLeft,
@@ -16,6 +17,7 @@ import {
   RefreshCcw,
   LayoutDashboard,
   Settings,
+  Share2,
 } from "lucide-react";
 const App = () => {
   const [activeTab, setActiveTab] = useState("routing"); // 'routing' atau 'cs'
@@ -56,6 +58,17 @@ const App = () => {
               <HardDrive size={18} />
               Content Store
             </button>
+            <button
+              onClick={() => setActiveTab("topology")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                activeTab === "topology"
+                  ? "bg-indigo-50 text-indigo-700 border-indigo-100 shadow-sm"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+              }`}
+            >
+              <Share2 size={18} />
+              Network Topology
+            </button>
           </nav>
 
           <div className="mt-auto pt-10 hidden md:block">
@@ -76,25 +89,23 @@ const App = () => {
           <header className="mb-8 flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                {activeTab === "routing" ? "Routing Table" : "Storage Metrics"}
+                {activeTab === "routing"
+                  ? "Routing Status"
+                  : activeTab === "cs"
+                    ? "Content Store Status"
+                    : "Network Topology"}
               </h1>
               <p className="text-slate-500">
                 Monitor data real-time dari Named Data Networking node.
               </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <button className="p-2 text-slate-400 hover:bg-white rounded-lg border border-transparent hover:border-slate-200 transition-all">
-                <RefreshCcw size={20} />
-              </button>
-              <button className="p-2 text-slate-400 hover:bg-white rounded-lg border border-transparent hover:border-slate-200 transition-all">
-                <Settings size={20} />
-              </button>
             </div>
           </header>
 
           <div className="max-w-5xl">
             {activeTab === "routing" ? (
               <TabelRoutingStatus />
+            ) : activeTab === "topology" ? (
+              <NDNTopology />
             ) : (
               <TabelCsStatus />
             )}
