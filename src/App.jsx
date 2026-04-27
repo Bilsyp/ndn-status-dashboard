@@ -2,6 +2,7 @@ import TabelRoutingStatus from "./components/TabelRoutingStatus";
 import TabelCsStatus from "./components/TabelCsStatus";
 import React, { useState } from "react";
 import NDNTopology from "./components/NDNTopology";
+import TaskList from "./components/TaskList";
 import {
   Network,
   ArrowRightLeft,
@@ -18,10 +19,16 @@ import {
   LayoutDashboard,
   Settings,
   Share2,
+  BookCheck,
 } from "lucide-react";
 const App = () => {
   const [activeTab, setActiveTab] = useState("routing"); // 'routing' atau 'cs'
-
+  const tabLabels = {
+    routing: "Routing Status",
+    cs: "Content Store Status",
+    topology: "Network Topology",
+    taskslist: "Task List",
+  };
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
       {/* Sidebar Navigasi Desktop / Header Mobile */}
@@ -69,6 +76,17 @@ const App = () => {
               <Share2 size={18} />
               Network Topology
             </button>
+            <button
+              onClick={() => setActiveTab("taskslist")}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+                activeTab === "taskslist"
+                  ? "bg-indigo-50 text-indigo-700 border-indigo-100 shadow-sm"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+              }`}
+            >
+              <BookCheck size={18} />
+              Task List
+            </button>
           </nav>
 
           <div className="mt-auto pt-10 hidden md:block">
@@ -89,11 +107,7 @@ const App = () => {
           <header className="mb-8 flex justify-between items-center">
             <div>
               <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                {activeTab === "routing"
-                  ? "Routing Status"
-                  : activeTab === "cs"
-                    ? "Content Store Status"
-                    : "Network Topology"}
+                {tabLabels[activeTab] || "Dashboard"}
               </h1>
               <p className="text-slate-500">
                 Monitor data real-time dari Named Data Networking node.
@@ -106,6 +120,8 @@ const App = () => {
               <TabelRoutingStatus />
             ) : activeTab === "topology" ? (
               <NDNTopology />
+            ) : activeTab == "taskslist" ? (
+              <TaskList />
             ) : (
               <TabelCsStatus />
             )}
