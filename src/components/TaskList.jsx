@@ -287,7 +287,7 @@ const TaskList = () => {
                   tasks.map((task) => (
                     <div
                       key={task.id}
-                      onClick={() => toggleTask(task.id)}
+                      onClick={() => toggleTask(task.id, task.status)}
                       className={`p-6 rounded-[2rem] border transition-all cursor-pointer flex items-start gap-5 group relative ${
                         task.status === "completed"
                           ? "bg-emerald-50/40 border-emerald-100 opacity-80"
