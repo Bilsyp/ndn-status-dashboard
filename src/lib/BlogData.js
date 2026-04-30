@@ -29,6 +29,17 @@ const blogData = [
       },
     ],
   },
+  {
+    type: "folder",
+    name: "Metodology",
+    children: [
+      {
+        type: "file",
+        name: "Pelatihan Model Volatility",
+        path: "metodology/PelatihanModelVolatility-AwareHybridABR",
+      },
+    ],
+  },
 ];
 
 export { blogData };
