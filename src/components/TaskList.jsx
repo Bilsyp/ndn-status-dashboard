@@ -23,6 +23,7 @@ import {
   X,
   LayoutDashboard,
   Circle,
+  Clock,
 } from "lucide-react";
 
 const TaskList = () => {
@@ -60,15 +61,6 @@ const TaskList = () => {
     await deleteDoc(doc(db, "tasks", id));
   };
 
-  const handleEditTask = async (id) => {
-    const newTitle = prompt("Edit title:");
-    if (!newTitle) return;
-
-    const ref = doc(db, "tasks", id);
-    await updateDoc(ref, {
-      title: newTitle,
-    });
-  };
   const handleAddTask = async () => {
     if (!newTask.title) return;
 

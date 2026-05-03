@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
 import { blogData } from "../lib/BlogData.js";
 function ReportBlogs() {
   const [selectedFile, setSelectedFile] = useState(() => {
@@ -90,7 +92,12 @@ function ReportBlogs() {
             ← Kembali ke Daftar
           </button>
           <article className="prose prose-indigo lg:prose-xl max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm, remarkMath]}
+              rehypePlugins={[rehypeKatex]}
+            >
+              {content}
+            </ReactMarkdown>
           </article>
         </div>
       )}

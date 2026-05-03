@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   HardDrive,
   Activity,
   Database,
-  Zap,
   Target,
   XCircle,
   RefreshCcw,
-  CheckCircle2,
 } from "lucide-react";
 function TabelCsStatus() {
   const [cs, setCs] = useState(null);

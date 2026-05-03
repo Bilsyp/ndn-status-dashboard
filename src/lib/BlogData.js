@@ -35,8 +35,13 @@ const blogData = [
     children: [
       {
         type: "file",
-        name: "Pelatihan Model Volatility",
+        name: "Dataset Log Jaringan Untuk Pelatihan",
         path: "metodology/PelatihanModelVolatility-AwareHybridABR",
+      },
+      {
+        type: "file",
+        name: "Metodologi Pembangunan Environment dan Mekanisme RL",
+        path: "metodology/Metodologi-Pembangunan-Environment",
       },
     ],
   },

@@ -1,6 +1,6 @@
 import TabelRoutingStatus from "./components/TabelRoutingStatus";
 import TabelCsStatus from "./components/TabelCsStatus";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import NDNTopology from "./components/NDNTopology";
 import TaskList from "./components/TaskList";
 import ReportBlogs from "./components/ReportBlogs";
@@ -13,7 +13,9 @@ import {
   MessageCircleWarning,
   Menu, // Icon untuk buka
   ChevronLeft, // Icon untuk tutup
+  CardSim,
 } from "lucide-react";
+import CatalogContent from "./components/CatalogContent";
 
 const App = () => {
   const tabLabels = {
@@ -21,6 +23,7 @@ const App = () => {
     cs: "Content Store Status",
     topology: "Network Topology",
     taskslist: "Task List",
+    Catalog: "Catalog Content",
     Laporan: "Laporan",
   };
 
@@ -30,6 +33,7 @@ const App = () => {
     topology: <NDNTopology />,
     taskslist: <TaskList />,
     Laporan: <ReportBlogs />,
+    ContentCatalog: <CatalogContent />,
   };
 
   const navItems = [
@@ -37,7 +41,13 @@ const App = () => {
     { id: "cs", label: "Content Store", icon: HardDrive },
     { id: "topology", label: "Network Topology", icon: Share2 },
     { id: "taskslist", label: "Task List", icon: BookCheck },
-    { id: "Laporan", label: "Laporan", icon: MessageCircleWarning },
+
+    { id: "Laporan", label: "Laporan", icon: CardSim },
+    {
+      id: "ContentCatalog",
+      label: "ContentCatalog",
+      icon: MessageCircleWarning,
+    },
   ];
 
   // State untuk Tab Aktif
