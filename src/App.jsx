@@ -16,7 +16,7 @@ import {
   CardSim,
 } from "lucide-react";
 import CatalogContent from "./components/CatalogContent";
-
+import "katex/dist/katex.min.css";
 const App = () => {
   const tabLabels = {
     routing: "Routing Status",

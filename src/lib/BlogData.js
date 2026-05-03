@@ -43,6 +43,38 @@ const blogData = [
         name: "Metodologi Pembangunan Environment dan Mekanisme RL",
         path: "metodology/Metodologi-Pembangunan-Environment",
       },
+      {
+        type: "file",
+        name: "Metodologi Formulasi Matematis Model RL",
+        path: "metodology/Formulasi-Matematis-Model",
+      },
+    ],
+  },
+  {
+    type: "folder",
+    name: "Implementasi Sistem",
+    children: [
+      {
+        type: "file",
+        name: "Implementasi Sistem",
+        path: "Implementasi-Sistem/arsitektur",
+      },
+    ],
+  },
+  {
+    type: "folder",
+    name: "Pengujian Dan Evaluasi",
+    children: [
+      {
+        type: "file",
+        name: "Peungujian system pertama ",
+        path: "Pengujian-Dan-Evaluasi/pengujian",
+      },
+      {
+        type: "file",
+        name: "Peungujian system  kedua",
+        path: "Pengujian-Dan-Evaluasi/pengujian-kedua",
+      },
     ],
   },
 ];

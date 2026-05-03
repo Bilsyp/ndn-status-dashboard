@@ -183,7 +183,7 @@ Secara _default_, **Stable Baselines3** membangun struktur jaringan saraf tiruan
 
 > **Informasi Teknis:** Struktur ini merupakan arsitektur standar yang efisien untuk menangani data berbasis vektor. Penggunaan dua _hidden layer_ dengan masing-masing 64 neuron memberikan kapasitas yang cukup bagi agen untuk mempelajari hubungan non-linear antara kondisi jaringan (volatilitas, RTT, CWND) dan pemilihan _bitrate_ yang optimal.
 
-# 9. Analisis Performa Model (Preliminary Evaluation)
+### 9. Analisis Performa Model (Preliminary Evaluation)
 
 Analisis ini didasarkan pada empat grafik hasil evaluasi model **Hybrid ABR (Adaptive Bitrate)**. Setiap grafik merepresentasikan performa agen AI dalam menghadapi karakteristik jaringan yang berbeda-beda melalui emulasi _trace log_.
 
