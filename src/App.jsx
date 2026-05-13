@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import NDNTopology from "./components/NDNTopology";
 import TaskList from "./components/TaskList";
 import ReportBlogs from "./components/ReportBlogs";
+import AbrExperimentCalculator from "./components/AbrExperimentCalculator";
+import QoeAnalytics from "./components/QoeAnalytics";
+import NdnDataAnalytics from "./components/NDNDataAnalytics";
 import {
   Network,
   HardDrive,
@@ -13,7 +16,9 @@ import {
   MessageCircleWarning,
   Menu, // Icon untuk buka
   ChevronLeft, // Icon untuk tutup
+  Calculator,
   CardSim,
+  ChartArea,
 } from "lucide-react";
 import CatalogContent from "./components/CatalogContent";
 import "katex/dist/katex.min.css";
@@ -33,6 +38,10 @@ const App = () => {
     topology: <NDNTopology />,
     taskslist: <TaskList />,
     Laporan: <ReportBlogs />,
+    AbrExperimentCalculator: <AbrExperimentCalculator />,
+    QoeAnalytics: <QoeAnalytics />,
+    NdnDataAnalytics: <NdnDataAnalytics />,
+
     ContentCatalog: <CatalogContent />,
   };
 
@@ -43,6 +52,21 @@ const App = () => {
     { id: "taskslist", label: "Task List", icon: BookCheck },
 
     { id: "Laporan", label: "Laporan", icon: CardSim },
+    {
+      id: "AbrExperimentCalculator",
+      label: "AbrExperimentCalculator",
+      icon: Calculator,
+    },
+    {
+      id: "QoeAnalytics",
+      label: "QoeAnalytics",
+      icon: ChartArea,
+    },
+    {
+      id: "NdnDataAnalytics",
+      label: "NdnDataAnalytics",
+      icon: ChartArea,
+    },
     {
       id: "ContentCatalog",
       label: "ContentCatalog",
