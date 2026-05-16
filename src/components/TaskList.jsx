@@ -7,6 +7,7 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
+// Pastikan path firebase ini sesuai dengan project Anda
 import { db } from "../firebase";
 
 import {
@@ -24,9 +25,10 @@ import {
   LayoutDashboard,
   Circle,
   Clock,
+  Filter,
 } from "lucide-react";
 
-const TaskList = () => {
+export default function App() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState({
     title: "",
@@ -34,9 +36,12 @@ const TaskList = () => {
     priority: "medium",
     date: "",
   });
-  const [toast, setToast] = useState(null); // { message: string, type: 'success' | 'error' }
-  const [view, setView] = useState("list"); // 'form' or 'list'
-  // 🔥 ambil data realtime dari firestore
+  const [toast, setToast] = useState(null);
+  const [view, setView] = useState("list");
+
+  // 🔥 State baru untuk filter
+  const [filterStatus, setFilterStatus] = useState("all"); // 'all', 'pending', 'in-progress', 'completed'
+
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "tasks"), (snapshot) => {
       const data = snapshot.docs.map((docItem) => ({
@@ -48,14 +53,16 @@ const TaskList = () => {
 
     return () => unsubscribe();
   }, []);
+
   useEffect(() => {
     if (toast) {
       const timer = setTimeout(() => setToast(null), 3000);
       return () => clearTimeout(timer);
     }
   }, [toast]);
+
   const handleDeleteTask = async (id) => {
-    const confirmDelete = confirm("Yakin hapus task?");
+    const confirmDelete = window.confirm("Yakin hapus task?");
     if (!confirmDelete) return;
 
     await deleteDoc(doc(db, "tasks", id));
@@ -66,7 +73,7 @@ const TaskList = () => {
 
     await addDoc(collection(db, "tasks"), {
       ...newTask,
-      status: "pending",
+      status: "pending", // Default status adalah pending (Belum mulai)
       createdAt: new Date(),
     });
 
@@ -76,10 +83,20 @@ const TaskList = () => {
       priority: "medium",
       date: "",
     });
+    setToast({ message: "Task berhasil ditambahkan!", type: "success" });
   };
-  // 🔥 toggle status + update ke firestore
+
+  // 🔥 Logika toggle diperbarui menjadi siklus: pending -> in-progress -> completed -> pending
   const toggleTask = async (id, currentStatus) => {
-    const nextStatus = currentStatus === "completed" ? "pending" : "completed";
+    let nextStatus = "pending";
+
+    if (currentStatus === "pending") {
+      nextStatus = "in-progress";
+    } else if (currentStatus === "in-progress") {
+      nextStatus = "completed";
+    } else if (currentStatus === "completed") {
+      nextStatus = "pending";
+    }
 
     try {
       const ref = doc(db, "tasks", id);
@@ -97,15 +114,30 @@ const TaskList = () => {
         return <CheckCircle2 className="text-emerald-500" size={20} />;
       case "in-progress":
         return <Clock className="text-amber-500 animate-pulse" size={20} />;
+      case "pending":
       default:
         return <Circle className="text-slate-300" size={20} />;
     }
   };
 
+  // 🔥 Logika Filterisasi
+  const filteredTasks = tasks.filter((task) => {
+    if (filterStatus === "all") return true;
+    return task.status === filterStatus;
+  });
+
   const completedCount = tasks.filter((t) => t.status === "completed").length;
   const progress = tasks.length
     ? Math.round((completedCount / tasks.length) * 100)
     : 0;
+
+  // Data tombol filter untuk memudahkan mapping UI
+  const filterTabs = [
+    { id: "all", label: "Semua", icon: List },
+
+    { id: "in-progress", label: "Proses", icon: Clock },
+    { id: "completed", label: "Selesai", icon: CheckCircle2 },
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-8 font-sans text-slate-900">
@@ -258,25 +290,57 @@ const TaskList = () => {
             ) : (
               /* LIST VIEW */
               <div className="space-y-4 animate-in fade-in slide-in-from-left-4 duration-500">
-                <div className="flex items-center justify-between mb-6 px-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 px-2 gap-4">
                   <h3 className="text-xl font-bold text-slate-800 flex items-center gap-2">
                     Daftar Pekerjaan
                     <span className="bg-slate-200 text-slate-600 text-xs px-2.5 py-1 rounded-full">
-                      {tasks.length}
+                      {filteredTasks.length}{" "}
+                      {filterStatus !== "all" && "ditemukan"}
                     </span>
                   </h3>
                 </div>
-                {tasks.length === 0 ? (
+
+                {/* UI Tombol Filter */}
+                <div className="flex flex-wrap gap-2 mb-6 px-2">
+                  {filterTabs.map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setFilterStatus(tab.id)}
+                      className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                        filterStatus === tab.id
+                          ? "bg-slate-800 text-white shadow-md"
+                          : "bg-white text-slate-500 border border-slate-200 hover:bg-slate-50 hover:border-slate-300"
+                      }`}
+                    >
+                      <tab.icon
+                        size={14}
+                        className={
+                          filterStatus === tab.id ? "text-indigo-400" : ""
+                        }
+                      />
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* List Tasks menggunakan variabel filteredTasks */}
+                {filteredTasks.length === 0 ? (
                   <div className="bg-white border-2 border-dashed border-slate-200 rounded-[2rem] p-12 text-center">
                     <div className="bg-slate-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <List className="text-slate-300" size={32} />
+                      {filterStatus === "all" ? (
+                        <List className="text-slate-300" size={32} />
+                      ) : (
+                        <Filter className="text-slate-300" size={32} />
+                      )}
                     </div>
                     <p className="text-slate-500 font-medium">
-                      Belum ada task. Mulai dengan membuat yang baru!
+                      {filterStatus === "all"
+                        ? "Belum ada task. Mulai dengan membuat yang baru!"
+                        : "Tidak ada task dengan status ini."}
                     </p>
                   </div>
                 ) : (
-                  tasks.map((task) => (
+                  filteredTasks.map((task) => (
                     <div
                       key={task.id}
                       onClick={() => toggleTask(task.id, task.status)}
@@ -324,7 +388,7 @@ const TaskList = () => {
                           </p>
                           <button
                             onClick={(e) => {
-                              e.stopPropagation();
+                              e.stopPropagation(); // Mencegah toggle tertrigger saat menekan hapus
                               handleDeleteTask(task.id);
                             }}
                             className="text-[11px] font-bold text-rose-500 hover:text-rose-700 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1"
@@ -413,6 +477,4 @@ const TaskList = () => {
       </div>
     </div>
   );
-};
-
-export default TaskList;
+}
