@@ -5,11 +5,6 @@
 
 ### 1. Sisi Pengguna (Consumer Layer)
 
-Pada lapisan ini . Peran utama klien bukan hanya memutar video, tetapi juga bertindak sebagai sensor cerdas.
-
-- **Ekstraksi Fitur**: Melalui fungsi `getQuantizedName`, klien melakukan ekstraksi terhadap empat fitur utama: _Buffer_, _Throughput_, _CWND_, dan _Indeks Segmen_.
-- **Kuantisasi**: Data mentah dikuantisasi menjadi label semantik (seperti `panic`, `safe`, atau `slow`) yang membentuk nama paket NDN unik.
-
 ### 2. Lapisan Jaringan (NDN Fabric)
 
 Ini adalah tulang punggung sistem yang menjalankan protokol **Named Data Networking (NDN)** melalui node **NFD** (_Named Data Forwarding_). Di sinilah prinsip _Memoization_ terjadi:

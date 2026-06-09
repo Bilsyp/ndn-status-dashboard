@@ -77,14 +77,6 @@ Kami membandingkan tiga pendekatan untuk memvalidasi efisiensi sistem:
 - **Buffer-Based:** Baseline menggunakan estimasi kecepatan jaringan tradisional.
 - **NDN + AI:** Sistem usulan yang mengintegrasikan NDN dengan AI Layer dan mekanisme _decision reuse_.
 
-### 🌐 Network Scenario
-
-Pengujian dilakukan menggunakan **Mahimahi Network Emulator** dengan tiga skenario utama:
-
-1. **Stable:** Bandwidth konsisten untuk melihat batas atas performa.
-2. **Fluctuating:** Perubahan bandwidth yang dinamis untuk menguji responsivitas algoritma.
-3. **Bad:** Kondisi _low-bandwidth_ dan _high-latency_ untuk menguji ketahanan sistem.
-
 ### 📦 Configuration Details
 
 - **Video Config:** Menggunakan _bitrate ladder_ dengan rentang **0.4 Mbps – 3.3 Mbps**.

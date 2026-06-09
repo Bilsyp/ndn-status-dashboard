@@ -1,9 +1,63 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { blogData } from "../lib/BlogData.js";
+import Zoom from "react-medium-image-zoom";
+import rehypeRaw from "rehype-raw";
+import FlourishEmbed from "./FlourishEmbed";
+const MarkdownComponents = {
+  // Kita modifikasi renderer paragraf (<p>) karena gambar di markdown otomatis dibungkus tag <p>
+  p: ({ children }) => {
+    // Cek apakah isi di dalam paragraf ini semuanya adalah gambar
+    const isGallery = React.Children.toArray(children).every(
+      (child) =>
+        child.type === "img" ||
+        (typeof child === "string" && child.trim() === ""),
+    );
+
+    // Jika ada lebih dari 1 gambar berurutan, ubah menjadi Grid Galeri
+    if (
+      isGallery &&
+      React.Children.toArray(children).filter((c) => c.type === "img").length >
+        1
+    ) {
+      return (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+          {React.Children.map(children, (child) => {
+            if (child.type === "img") {
+              return (
+                <div className="overflow-hidden rounded-lg shadow-sm border border-gray-200">
+                  <Zoom>
+                    <img
+                      {...child.props}
+                      className="w-full h-40 object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </Zoom>
+                </div>
+              );
+            }
+            return null;
+          })}
+        </div>
+      );
+    }
+
+    // Jika paragraf teks biasa, kembalikan tag <p> normal
+    return <p className="mb-4 text-gray-800 leading-relaxed">{children}</p>;
+  },
+  div: ({ className, ...props }) => {
+    // Jika mendeteksi kelas 'flourish-embed', alihkan ke komponen React kita
+    if (className && className.includes("flourish-embed")) {
+      const dataSrc = props["data-src"] || props["dataSrc"]; // Menangkap atribut data-src
+      return <FlourishEmbed dataSrc={dataSrc} />;
+    }
+
+    // Jika div biasa, render div normal
+    return <div className={className} {...props} />;
+  },
+};
 function ReportBlogs() {
   const [selectedFile, setSelectedFile] = useState(() => {
     return localStorage.getItem("selectedMarkdown") || null;
@@ -94,7 +148,8 @@ function ReportBlogs() {
           <article className="prose prose-indigo lg:prose-xl max-w-none">
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
-              rehypePlugins={[rehypeKatex]}
+              rehypePlugins={[rehypeKatex, rehypeRaw]}
+              components={MarkdownComponents}
             >
               {content}
             </ReactMarkdown>

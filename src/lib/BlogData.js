@@ -35,6 +35,11 @@ const blogData = [
     children: [
       {
         type: "file",
+        name: "Konsep Memoization pada NDN (Multi-Tier Quantization untuk ABR",
+        path: "metodology/Konsep-Memoization-pada-NDN",
+      },
+      {
+        type: "file",
         name: "Dataset Log Jaringan Untuk Pelatihan",
         path: "metodology/PelatihanModelVolatility-AwareHybridABR",
       },
@@ -74,6 +79,11 @@ const blogData = [
         type: "file",
         name: "Peungujian system  kedua",
         path: "Pengujian-Dan-Evaluasi/pengujian-kedua",
+      },
+      {
+        type: "file",
+        name: "Peungujian system  ketiga",
+        path: "Pengujian-Dan-Evaluasi/pengujian-ketiga",
       },
     ],
   },
